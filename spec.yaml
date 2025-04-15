@@ -1,0 +1,40 @@
+openapi: "3.0.3"
+info: 
+  title: Openapifirst bug repro
+  version: 0.0.0
+  
+tags: 
+  - name: bugs
+    description: bugs
+
+servers: 
+  - url: 'http://127.0.0.1:3000'
+    description: local 
+
+paths:
+  /test/{id}:
+    get:
+      operationId: test
+      summary: example test
+      parameters: 
+        # this ref breaks load:
+        - $ref: spec/parameters.yaml#/id
+        # below is fine:
+        # - name: id
+        #   in: path
+        #   required: true
+        #   schema:
+        #     type: string
+      responses:
+        '200':
+          description: succesful response
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  ok: { type: string }
+
+        '400':
+          description: 'client error'
+  
